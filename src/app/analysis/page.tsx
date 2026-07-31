@@ -1,8 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function AnalysisPage() {
-  return (
+  const [step, setStep] = useState<"name" | "location">("name");
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+
+ return (
     <main className="relative min-h-screen overflow-hidden bg-[#FCFCFC] text-[#1A1B1C]">
       <header className="absolute inset-x-0 top-0 z-20 flex h-16 items-center px-5 sm:px-8">
         <div className="flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em]">
@@ -29,7 +36,13 @@ export default function AnalysisPage() {
         className="pointer-events-none absolute left-1/2 top-1/2 size-[min(79.4vh,90vw,762px)] -translate-x-1/2 -translate-y-1/2"
       />
 
-      <div className="absolute left-1/2 top-1/2 z-10 flex w-[min(85vw,417px)] -translate-x-1/2 -translate-y-1/2 flex-col items-center">
+    <div
+        className={`absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center ${
+            step === "name"
+            ? "w-[min(85vw,417px)]"
+            : "w-[min(85vw,481px)]"
+        }`}
+        >
         <label
           htmlFor="name"
           className="mb-1 text-sm uppercase leading-6 opacity-40"
@@ -41,14 +54,30 @@ export default function AnalysisPage() {
           id="name"
           name="name"
           type="text"
-          placeholder="Introduce Yourself"
-          autoComplete="name"
+          placeholder={step === "name" ? "Introduce Yourself" : "Where are you from?"}
+          value={step === "name" ? name : location}
+        onChange={(event) =>
+        step === "name"
+            ? setName(event.target.value)
+            : setLocation(event.target.value)
+        }
+        autoComplete={step === "name" ? "name" : "address-level2"}
+        onKeyDown={(event) => {
+        if (event.key === "Enter" && step === "name" && name.trim()) {
+            setStep("location");
+        }
+        }}
           className="w-full border-b border-[#1A1B1C] bg-transparent pb-1 text-center text-[clamp(40px,3.125vw,60px)] font-light leading-16 tracking-[-0.07em] outline-none placeholder:text-[#1A1B1C]"
         />
       </div>
 
       <Link
-        href="/"
+        href={step === "name" ? "/" : "/analysis"}
+        onClick={() => {
+            if (step === "location") {
+            setStep("name");
+            }
+        }}
         className="absolute bottom-9 left-5 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:left-8"
       >
         <span className="relative size-11 shrink-0" aria-hidden="true">
