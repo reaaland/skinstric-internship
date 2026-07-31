@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type DirectionButtonProps = {
@@ -12,6 +13,7 @@ type DirectionButtonProps = {
   onMouseLeave?: () => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  onClick?: () => void;
 };
 
 function DirectionButton({
@@ -23,6 +25,7 @@ function DirectionButton({
   onMouseLeave,
   onFocus,
   onBlur,
+  onClick,
 }: DirectionButtonProps) {
   const isLeft = direction === "left";
 
@@ -110,6 +113,7 @@ function DirectionButton({
     onMouseLeave={onMouseLeave}
     onFocus={onFocus}
     onBlur={onBlur}
+    onClick={onClick}
     className={`items-center text-sm font-semibold uppercase tracking-[-0.02em] transition-all duration-700 ease-out ${
       expanded ? "gap-6 opacity-100" : "gap-4 opacity-70"
     } ${className}`}
@@ -124,6 +128,7 @@ function DirectionButton({
 }
 
 export default function Home() {
+  const router = useRouter();
   const [takeTestHovered, setTakeTestHovered] = useState(false);
 
   return (
@@ -214,6 +219,7 @@ export default function Home() {
         onMouseLeave={() => setTakeTestHovered(false)}
         onFocus={() => setTakeTestHovered(true)}
         onBlur={() => setTakeTestHovered(false)}
+        onClick={() => router.push("/analysis")}
         className="absolute right-8 top-1/2 z-20 hidden -translate-y-1/2 md:flex"
       />
 
