@@ -113,10 +113,10 @@ export default function AnalysisPage() {
         <span>Back</span>
       </Link>
       {step === "location" && location.trim() && (
-  <button
-    type="button"
-    className="absolute right-5 bottom-9 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:right-8"
-  >
+  <Link
+  href="/scan"
+  className="absolute right-5 bottom-9 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:right-8"
+>
     <span>Proceed</span>
 
     <span className="relative size-11 shrink-0" aria-hidden="true">
@@ -144,7 +144,7 @@ export default function AnalysisPage() {
         />
       </span>
     </span>
-  </button>
+  </Link>
 )}
     </main>
   );

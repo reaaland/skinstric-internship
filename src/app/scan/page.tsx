@@ -1,0 +1,123 @@
+import Image from "next/image";
+import Link from "next/link";
+
+export default function ScanPage() {
+  return (
+    <main className="relative min-h-screen overflow-hidden bg-[#FCFCFC] text-[#1A1B1C]">
+      <header className="absolute inset-x-0 top-0 z-20 flex h-16 items-center px-5 sm:px-8">
+        <div className="flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em]">
+          <span>Skinstric</span>
+
+          <span className="flex items-center gap-1.5 opacity-60">
+            <span className="h-4.25 w-1 rounded-sm border border-[#1A1B1C]" />
+            <span>Intro</span>
+            <span className="h-4.25 w-1 rounded-sm border border-[#1A1B1C]" />
+          </span>
+        </div>
+      </header>
+
+      <p className="absolute left-5 top-21.5 z-20 text-base font-semibold uppercase leading-6 tracking-[-0.02em] sm:left-8">
+        To start analysis
+      </p>
+
+      <div className="absolute left-1/4 top-1/2 z-10 size-[min(40vw,482px)] -translate-x-1/2 -translate-y-1/2">
+    <Image
+        src="/assets/hover-rombuses.svg"
+        alt=""
+        fill
+        sizes="482px"
+        className="pointer-events-none object-contain"
+    />
+
+    <button
+        type="button"
+        aria-label="Allow AI to scan your face"
+        className="absolute left-1/2 top-1/2 size-34 -translate-x-1/2 -translate-y-1/2"
+        >
+        <Image
+            src="/assets/scan-camera.svg"
+            alt=""
+            fill
+            sizes="136px"
+            className="object-contain"
+        />
+        </button>
+
+        <Image
+        src="/assets/scan-camera-label.svg"
+        alt=""
+        width={239}
+        height={76}
+        aria-hidden="true"
+        className="pointer-events-none absolute left-[58.3%] top-[26.1%] h-auto w-[49.6%]"
+        />
+        </div>
+
+        <div className="absolute left-3/4 top-1/2 z-10 size-[min(40vw,482px)] -translate-x-1/2 -translate-y-1/2">
+  <Image
+    src="/assets/hover-rombuses.svg"
+    alt=""
+    fill
+    sizes="482px"
+    className="pointer-events-none object-contain"
+  />
+
+  <button
+    type="button"
+    aria-label="Allow AI to access your gallery"
+    className="absolute left-1/2 top-1/2 size-34 -translate-x-1/2 -translate-y-1/2"
+  >
+    <Image
+      src="/assets/scan-gallery.svg"
+      alt=""
+      fill
+      sizes="136px"
+      className="object-contain"
+    />
+  </button>
+
+  <Image
+    src="/assets/scan-gallery-label.svg"
+    alt=""
+    width={210}
+    height={93}
+    aria-hidden="true"
+    className="pointer-events-none absolute left-[-1.2%] top-[58.3%] h-auto w-[43.6%]"
+  />
+</div>
+
+      <Link
+        href="/analysis"
+        className="absolute bottom-9 left-5 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:left-8"
+      >
+        <span className="relative size-11 shrink-0" aria-hidden="true">
+          <Image
+            src="/assets/discover-icon-part-1.svg"
+            alt=""
+            fill
+            sizes="44px"
+          />
+
+          <Image
+            src="/assets/discover-icon-part-2.svg"
+            alt=""
+            fill
+            sizes="44px"
+          />
+
+          <span className="absolute left-[35.71%] top-[37.63%] h-[24.74%] w-[21.43%]">
+            <Image
+              src="/assets/arrow-left.svg"
+              alt=""
+              fill
+              sizes="10px"
+              className="object-contain"
+            />
+          </span>
+        </span>
+
+        <span>Back</span>
+      </Link>
+    </main>
+  );
+}
