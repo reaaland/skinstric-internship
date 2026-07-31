@@ -40,14 +40,18 @@ export default function AnalysisPage() {
         className={`absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center ${
             step === "name"
             ? "w-[min(85vw,417px)]"
-            : "w-[min(85vw,481px)]"
+            : location.trim()
+                ? "w-[min(85vw,259px)]"
+                : "w-[min(85vw,481px)]"
         }`}
         >
         <label
           htmlFor="name"
           className="mb-1 text-sm uppercase leading-6 opacity-40"
         >
-          Click to type
+          {step === "location" && location.trim()
+            ? "Where are you from?"
+            : "Click to type"}
         </label>
 
         <input
@@ -108,6 +112,40 @@ export default function AnalysisPage() {
 
         <span>Back</span>
       </Link>
+      {step === "location" && location.trim() && (
+  <button
+    type="button"
+    className="absolute right-5 bottom-9 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:right-8"
+  >
+    <span>Proceed</span>
+
+    <span className="relative size-11 shrink-0" aria-hidden="true">
+      <Image
+        src="/assets/take-test-icon-part-1.svg"
+        alt=""
+        fill
+        sizes="44px"
+      />
+
+      <Image
+        src="/assets/take-test-icon-part-2.svg"
+        alt=""
+        fill
+        sizes="44px"
+      />
+
+      <span className="absolute top-[37.63%] left-[42.53%] h-[24.74%] w-[21.43%]">
+        <Image
+          src="/assets/arrow-right.svg"
+          alt=""
+          fill
+          sizes="10px"
+          className="-scale-x-100 object-contain"
+        />
+      </span>
+    </span>
+  </button>
+)}
     </main>
   );
 }
