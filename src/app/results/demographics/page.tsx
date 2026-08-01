@@ -2,35 +2,104 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const raceOptions = [
-  { name: "East Asian", confidence: 96, selected: true },
-  { name: "White", confidence: 6, selected: false },
-  { name: "Black", confidence: 3, selected: false },
-  { name: "South Asian", confidence: 2, selected: false },
-  { name: "Latino Hispanic", confidence: 0, selected: false },
-  { name: "South East Asain", confidence: 0, selected: false },
-  { name: "Middle Eastern", confidence: 0, selected: false },
-];
+type AnalysisScores = Record<string, number>;
 
-const ageOptions = [
-  { name: "0–9", confidence: 0, selected: false },
-  { name: "10–19", confidence: 4, selected: false },
-  { name: "20–29", confidence: 96, selected: true },
-  { name: "30–39", confidence: 2, selected: false },
-  { name: "40–49", confidence: 0, selected: false },
-  { name: "50–59", confidence: 0, selected: false },
-  { name: "60–69", confidence: 0, selected: false },
-  { name: "70+", confidence: 0, selected: false },
-];
+type AnalysisData = {
+  race: AnalysisScores;
+  age: AnalysisScores;
+  gender: AnalysisScores;
+};
+
+type Category = "race" | "age" | "gender";
 
 export default function DemographicsPage() {
-    const [activeCategory, setActiveCategory] =
-  useState<"race" | "age">("race");
+const router = useRouter();
 
-    const activeOptions =
-    activeCategory === "race" ? raceOptions : ageOptions;
+const [analysisData, setAnalysisData] =
+  useState<AnalysisData | null>(null);
+
+useEffect(() => {
+  const storedAnalysis = localStorage.getItem("skinstricAnalysis");
+
+  if (!storedAnalysis) return;
+
+  const timeoutId = window.setTimeout(() => {
+    try {
+      setAnalysisData(JSON.parse(storedAnalysis).data);
+    } catch {
+      setAnalysisData(null);
+    }
+  }, 0);
+
+  return () => window.clearTimeout(timeoutId);
+}, []);
+
+const getTopResult = (scores: AnalysisScores | undefined) =>
+Object.entries(scores ?? {}).sort(
+([, firstScore], [, secondScore]) => secondScore - firstScore,
+)[0];
+
+
+const [activeCategory, setActiveCategory] =
+useState<Category>("race");
+
+const [selectedResults, setSelectedResults] = useState<
+  Record<Category, string | null>
+>({
+  race: null,
+  age: null,
+  gender: null,
+});
+
+const activeScores = analysisData?.[activeCategory] ?? {};
+
+const activeOptions = Object.entries(activeScores)
+.sort(([, firstScore], [, secondScore]) => secondScore - firstScore)
+.map(([name, confidence], index) => ({
+    name,
+    confidence: confidence * 100,
+    selected:
+     selectedResults[activeCategory] !== null
+        ? name === selectedResults[activeCategory]
+        : index === 0,
+}));
+
+const selectedOption =
+  activeOptions.find((option) => option.selected) ?? activeOptions[0];
+const topRace = getTopResult(analysisData?.race);
+const topAge = getTopResult(analysisData?.age);
+const topGender = getTopResult(analysisData?.gender);
+
+const handleConfirm = () => {
+  const confirmedResults = {
+    race: selectedResults.race ?? topRace?.[0] ?? null,
+    age: selectedResults.age ?? topAge?.[0] ?? null,
+    gender: selectedResults.gender ?? topGender?.[0] ?? null,
+  };
+
+  localStorage.setItem(
+    "skinstricConfirmedResults",
+    JSON.stringify(confirmedResults),
+  );
+
+  router.push("/results");
+};
+
+const handleReset = () => {
+  setSelectedResults({
+    race: null,
+    age: null,
+    gender: null,
+  });
+};
+
+const formatLabel = (value: string | undefined) =>
+value
+    ? value.replace(/\b\w/g, (letter) => letter.toUpperCase())
+    : "—";
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#FCFCFC] text-[#1A1B1C]">
@@ -100,7 +169,7 @@ export default function DemographicsPage() {
   }`}
 >
             <p className="text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
-            East Asian
+            {formatLabel(selectedResults.race ?? topRace?.[0])}
             </p>
 
             <p className="mt-8 text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
@@ -118,7 +187,7 @@ export default function DemographicsPage() {
             }`}
         >
         <p className="text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
-            20–29
+            {formatLabel(selectedResults.age ?? topAge?.[0])}
         </p>
 
         <p className="mt-8 text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
@@ -126,23 +195,35 @@ export default function DemographicsPage() {
         </p>
         </button>
 
-        <div className="h-26 border-t border-[#1A1B1C] bg-[#F3F3F4] px-4 py-3">
+        <button
+  type="button"
+  onClick={() => setActiveCategory("gender")}
+  className={`h-26 border-t border-[#1A1B1C] px-4 py-3 text-left ${
+    activeCategory === "gender"
+      ? "bg-[#1A1B1C] text-[#FCFCFC]"
+      : "bg-[#F3F3F4] text-[#1A1B1C]"
+  }`}
+>
             <p className="text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
-            Female
+            {formatLabel(selectedResults.gender ?? topGender?.[0])}
             </p>
 
             <p className="mt-8 text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
             Sex
             </p>
-            </div>
+            </button>
             </div>
             <section className="absolute left-64 top-[31.67vh] h-[56.67vh] w-[calc(75vw-272px)] border-t border-[#1A1B1C] bg-[#F3F3F4]">
             <h2 className="px-4 pt-3 text-[40px] font-normal leading-10 tracking-tighter">
-            {activeCategory === "race" ? "East Asian" : "20–29 y.o."}
+        {selectedOption
+            ? `${formatLabel(selectedOption.name)}${
+                activeCategory === "age" ? " y.o." : ""
+                }`
+            : "—"}
             </h2>
         <div className="absolute right-4 top-[14.17vh] flex size-[40vh] items-center justify-center rounded-full border-2 border-[#1A1B1C]">
         <span className="text-[40px] font-normal leading-10 tracking-tighter">
-        96
+        {selectedOption ? selectedOption.confidence.toFixed(2) : "0.00"}
         </span>
 
         <span className="mb-5 text-2xl font-normal leading-10 tracking-tighter">
@@ -152,13 +233,26 @@ export default function DemographicsPage() {
      </section>
         <section className="absolute left-[75%] top-[31.67vh] h-[56.67vh] w-[23.33%] border-t border-[#1A1B1C] bg-[#F3F3F4]">
             <div className="flex h-12 items-center justify-between px-4 text-base uppercase leading-6 tracking-[-0.02em]">
-                <span>{activeCategory === "race" ? "Race" : "Age"}</span>
+ <span>
+  {activeCategory === "gender"
+    ? "Gender"
+    : activeCategory === "race"
+      ? "Race"
+      : "Age"}
+</span>
                 <span>A. I. Confidence</span>
             </div>
         {activeOptions.map((option) => (
-            <div
+            <button
+                type="button"
+                onClick={() =>
+                    setSelectedResults((current) => ({
+                    ...current,
+                    [activeCategory]: option.name,
+                    }))
+                }
                 key={option.name}
-                className={`flex h-[5vh] items-center justify-between px-4 text-base ${
+                className={`flex h-[5vh] w-full items-center justify-between px-4 text-left text-base ${
                 option.selected
                     ? "bg-[#1A1B1C] text-[#FCFCFC]"
                     : "text-[#1A1B1C]"
@@ -180,8 +274,8 @@ export default function DemographicsPage() {
                 {option.name}
                 </span>
 
-                <span>{option.confidence} %</span>
-            </div>
+                <span>{option.confidence.toFixed(2)} %</span>
+            </button>
             ))}        
         
     </section>
@@ -221,12 +315,15 @@ export default function DemographicsPage() {
         <span>Back</span>
         </Link>
             <button
+            onClick={handleReset}
             type="button"
             className="absolute bottom-9 right-36 border border-[#1A1B1C] px-4 py-2 text-sm font-semibold uppercase tracking-[-0.02em]"
             >
             Reset
             </button>
+
             <button
+            onClick={handleConfirm}
             type="button"
             className="absolute bottom-9 right-5 bg-[#1A1B1C] px-4 py-2 text-sm font-semibold uppercase tracking-[-0.02em] text-[#FCFCFC] sm:right-8"
             >

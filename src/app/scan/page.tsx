@@ -1,7 +1,71 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ScanPage() {
+  const router = useRouter();
+
+  const [isUploading, setIsUploading] = useState(false);
+
+  const [error, setError] = useState("");
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const file = event.target.files?.[0];
+
+  if (!file) return;
+
+  setIsUploading(true);
+  setError("");
+
+  const reader = new FileReader();
+
+  reader.onloadend = async () => {
+    if (typeof reader.result !== "string") {
+      setError("Unable to read the selected image.");
+      setIsUploading(false);
+      return;
+    }
+
+    const base64Image = reader.result.split(",")[1] ?? reader.result;
+
+    try {
+      const response = await fetch(
+        "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ image: base64Image }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Image analysis failed");
+      }
+
+      const analysisData = await response.json();
+
+      localStorage.setItem(
+        "skinstricAnalysis",
+        JSON.stringify(analysisData),
+      );
+
+      router.push("/results/demographics");
+    } catch {
+      setError("Unable to analyze the image. Please try again.");
+      setIsUploading(false);
+    }
+  };
+
+  reader.readAsDataURL(file);
+};
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#FCFCFC] text-[#1A1B1C]">
       <header className="absolute inset-x-0 top-0 z-20 flex h-16 items-center px-5 sm:px-8">
@@ -61,9 +125,17 @@ export default function ScanPage() {
     sizes="482px"
     className="pointer-events-none object-contain"
   />
+  <input
+  ref={fileInputRef}
+  type="file"
+  accept="image/*"
+  onChange={handleImageUpload}
+  className="hidden"
+/>
 
   <button
     type="button"
+    onClick={() => fileInputRef.current?.click()}
     aria-label="Allow AI to access your gallery"
     className="absolute left-1/2 top-1/2 size-34 -translate-x-1/2 -translate-y-1/2"
   >
@@ -84,7 +156,12 @@ export default function ScanPage() {
     aria-hidden="true"
     className="pointer-events-none absolute left-[-1.2%] top-[58.3%] h-auto w-[43.6%]"
   />
-</div>
+    </div>
+    {(isUploading || error) && (
+      <p className="absolute left-1/2 top-[68%] w-64 -translate-x-1/2 text-center text-sm">
+        {isUploading ? "Analyzing image..." : error}
+      </p>
+    )}
 
       <Link
         href="/analysis"
