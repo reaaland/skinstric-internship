@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function ScanPage() {
@@ -12,7 +12,116 @@ export default function ScanPage() {
 
   const [error, setError] = useState("");
 
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const streamRef = useRef<MediaStream | null>(null);
+
+  useEffect(() => {
+  if (!isCameraOpen || !videoRef.current || !streamRef.current) return;
+
+  videoRef.current.srcObject = streamRef.current;
+}, [isCameraOpen]);
+
+useEffect(() => {
+  return () => {
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+  };
+}, []);
+
+const canvasRef = useRef<HTMLCanvasElement>(null);
+
+const startCamera = async () => {
+  setError("");
+
+  try {
+const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "user" },
+      audio: false,
+    });
+
+    streamRef.current = stream;
+    setIsCameraOpen(true);
+
+    window.setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    }, 0);
+  } catch {
+    setError("Unable to access the camera. Please check your permissions.");
+  }
+};
+
+const stopCamera = () => {
+  streamRef.current?.getTracks().forEach((track) => track.stop());
+  streamRef.current = null;
+  setIsCameraOpen(false);
+};
+  
+const captureSelfie = async () => {
+  const video = videoRef.current;
+  const canvas = canvasRef.current;
+
+  if (!video || !canvas || !video.videoWidth || !video.videoHeight) {
+    setError("The camera is not ready yet. Please try again.");
+    return;
+  }
+
+  setIsUploading(true);
+  setError("");
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    setError("Unable to capture the image.");
+    setIsUploading(false);
+    return;
+  }
+
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  const base64Image = canvas
+    .toDataURL("image/jpeg", 0.9)
+    .split(",")[1];
+
+  stopCamera();
+
+  try {
+    const response = await fetch(
+      "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseTwo",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ image: base64Image }),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Image analysis failed");
+    }
+
+    const analysisData = await response.json();
+
+    localStorage.setItem(
+      "skinstricAnalysis",
+      JSON.stringify(analysisData),
+    );
+
+    router.push("/results/demographics");
+  } catch {
+    setError("Unable to analyze the selfie. Please try again.");
+    setIsUploading(false);
+  }
+};
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
   const file = event.target.files?.[0];
@@ -84,6 +193,27 @@ export default function ScanPage() {
         To start analysis
       </p>
 
+      {isCameraOpen && (
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          className="absolute left-1/2 top-1/2 z-30 h-[70vh] w-[70vw] -translate-x-1/2 -translate-y-1/2 bg-black object-cover"
+        />
+      )}
+      <canvas ref={canvasRef} className="hidden" />
+
+      {isCameraOpen && (
+      <button
+        type="button"
+        onClick={captureSelfie}
+        className="absolute bottom-12 left-1/2 z-40 -translate-x-1/2 bg-[#FCFCFC] px-6 py-3 text-sm font-semibold uppercase"
+      >
+        Take Picture
+      </button>
+    )}
+
       <div className="absolute left-1/4 top-1/2 z-10 size-[min(40vw,482px)] -translate-x-1/2 -translate-y-1/2">
     <Image
         src="/assets/hover-rombuses.svg"
@@ -94,6 +224,7 @@ export default function ScanPage() {
     />
 
     <button
+      onClick={startCamera}
         type="button"
         aria-label="Allow AI to scan your face"
         className="absolute left-1/2 top-1/2 size-34 -translate-x-1/2 -translate-y-1/2"
