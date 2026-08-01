@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 const raceOptions = [
   { name: "East Asian", confidence: 96, selected: true },
@@ -11,7 +14,23 @@ const raceOptions = [
   { name: "Middle Eastern", confidence: 0, selected: false },
 ];
 
+const ageOptions = [
+  { name: "0–9", confidence: 0, selected: false },
+  { name: "10–19", confidence: 4, selected: false },
+  { name: "20–29", confidence: 96, selected: true },
+  { name: "30–39", confidence: 2, selected: false },
+  { name: "40–49", confidence: 0, selected: false },
+  { name: "50–59", confidence: 0, selected: false },
+  { name: "60–69", confidence: 0, selected: false },
+  { name: "70+", confidence: 0, selected: false },
+];
+
 export default function DemographicsPage() {
+    const [activeCategory, setActiveCategory] =
+  useState<"race" | "age">("race");
+
+    const activeOptions =
+    activeCategory === "race" ? raceOptions : ageOptions;
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#FCFCFC] text-[#1A1B1C]">
@@ -35,11 +54,51 @@ export default function DemographicsPage() {
         <h1 className="mt-1 text-[72px] font-normal leading-16 tracking-[-0.06em]">
           Demographics
         </h1>
+    <div className="absolute left-147.5 top-6 flex gap-2">
+    <button type="button" className="relative size-8" aria-label="Previous">
+        <Image
+        src="/assets/discover-icon-part-1.svg"
+        alt=""
+        fill
+        sizes="32px"
+        />
+        <Image
+        src="/assets/arrow-left.svg"
+        alt=""
+        fill
+        sizes="8px"
+        className="scale-[0.22] object-contain"
+        />
+    </button>
 
+    <button type="button" className="relative size-8" aria-label="Next">
+        <Image
+        src="/assets/discover-icon-part-1.svg"
+        alt=""
+        fill
+        sizes="32px"
+        />
+        <Image
+        src="/assets/arrow-right.svg"
+        alt=""
+        fill
+        sizes="8px"
+        className="scale-[0.22] object-contain"
+        />
+    </button>
+    </div>
         <p className="mt-1 text-sm leading-6">Predicted race &amp; age</p>
       </section>
         <div className="absolute left-5 top-[31.67vh] flex w-52 flex-col gap-2 sm:left-8">
-        <div className="h-26 bg-[#1A1B1C] px-4 py-3 text-[#FCFCFC]">
+        <button
+  type="button"
+  onClick={() => setActiveCategory("race")}
+  className={`h-26 px-4 py-3 text-left ${
+    activeCategory === "race"
+      ? "bg-[#1A1B1C] text-[#FCFCFC]"
+      : "bg-[#F3F3F4] text-[#1A1B1C]"
+  }`}
+>
             <p className="text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
             East Asian
             </p>
@@ -47,17 +106,25 @@ export default function DemographicsPage() {
             <p className="mt-8 text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
             Race
             </p>
-        </div>
+        </button>
 
-        <div className="h-26 border-t border-[#1A1B1C] bg-[#E1E1E2] px-4 py-3">
-            <p className="text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
+        <button
+        type="button"
+        onClick={() => setActiveCategory("age")}
+        className={`h-26 border-t border-[#1A1B1C] px-4 py-3 text-left ${
+            activeCategory === "age"
+                ? "bg-[#1A1B1C] text-[#FCFCFC]"
+                : "bg-[#E1E1E2] text-[#1A1B1C]"
+            }`}
+        >
+        <p className="text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
             20–29
-            </p>
+        </p>
 
-            <p className="mt-8 text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
+        <p className="mt-8 text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
             Age
-            </p>
-        </div>
+        </p>
+        </button>
 
         <div className="h-26 border-t border-[#1A1B1C] bg-[#F3F3F4] px-4 py-3">
             <p className="text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
@@ -71,7 +138,7 @@ export default function DemographicsPage() {
             </div>
             <section className="absolute left-64 top-[31.67vh] h-[56.67vh] w-[calc(75vw-272px)] border-t border-[#1A1B1C] bg-[#F3F3F4]">
             <h2 className="px-4 pt-3 text-[40px] font-normal leading-10 tracking-tighter">
-                East Asian
+            {activeCategory === "race" ? "East Asian" : "20–29 y.o."}
             </h2>
         <div className="absolute right-4 top-[14.17vh] flex size-[40vh] items-center justify-center rounded-full border-2 border-[#1A1B1C]">
         <span className="text-[40px] font-normal leading-10 tracking-tighter">
@@ -85,13 +152,13 @@ export default function DemographicsPage() {
      </section>
         <section className="absolute left-[75%] top-[31.67vh] h-[56.67vh] w-[23.33%] border-t border-[#1A1B1C] bg-[#F3F3F4]">
             <div className="flex h-12 items-center justify-between px-4 text-base uppercase leading-6 tracking-[-0.02em]">
-                <span>Race</span>
+                <span>{activeCategory === "race" ? "Race" : "Age"}</span>
                 <span>A. I. Confidence</span>
             </div>
-        {raceOptions.map((option) => (
+        {activeOptions.map((option) => (
             <div
                 key={option.name}
-                className={`flex h-12 items-center justify-between px-4 text-base ${
+                className={`flex h-[5vh] items-center justify-between px-4 text-base ${
                 option.selected
                     ? "bg-[#1A1B1C] text-[#FCFCFC]"
                     : "text-[#1A1B1C]"
