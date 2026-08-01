@@ -3,11 +3,60 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AnalysisPage() {
+  const router = useRouter();
   const [step, setStep] = useState<"name" | "location">("name");
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
+  const [error, setError] = useState("");
+  const isValidText = (value: string) =>
+  /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(value.trim());
+  const handleNameSubmit = () => {
+  if (!isValidText(name)) {
+    setError("Please enter a valid name using letters only.");
+    return;
+  }
+
+  setError("");
+  setStep("location");
+};
+const handleLocationSubmit = async () => {
+  if (!isValidText(location)) {
+    setError("Please enter a valid location using letters only.");
+    return;
+  }
+
+  setError("");
+
+  try {
+    const userInfo = {
+      name: name.trim(),
+      location: location.trim(),
+    };
+
+    const response = await fetch(
+      "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseOne",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userInfo),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error("Submission failed");
+    }
+
+    localStorage.setItem("skinstricUser", JSON.stringify(userInfo));
+    router.push("/scan");
+  } catch {
+    setError("Unable to submit your information. Please try again.");
+  }
+};
 
  return (
     <main className="relative min-h-screen overflow-hidden bg-[#FCFCFC] text-[#1A1B1C]">
@@ -60,19 +109,28 @@ export default function AnalysisPage() {
           type="text"
           placeholder={step === "name" ? "Introduce Yourself" : "Where are you from?"}
           value={step === "name" ? name : location}
-        onChange={(event) =>
-        step === "name"
-            ? setName(event.target.value)
-            : setLocation(event.target.value)
-        }
-        autoComplete={step === "name" ? "name" : "address-level2"}
-        onKeyDown={(event) => {
-        if (event.key === "Enter" && step === "name" && name.trim()) {
-            setStep("location");
-        }
-        }}
+          onChange={(event) =>
+          step === "name"
+              ? setName(event.target.value)
+              : setLocation(event.target.value)
+          }
+          autoComplete={step === "name" ? "name" : "address-level2"}
+          onKeyDown={(event) => {
+            if (event.key !== "Enter") return;
+
+            if (step === "name") {
+              handleNameSubmit();
+            } else {
+              handleLocationSubmit();
+            }
+          }}
           className="w-full border-b border-[#1A1B1C] bg-transparent pb-1 text-center text-[clamp(40px,3.125vw,60px)] font-light leading-16 tracking-[-0.07em] outline-none placeholder:text-[#1A1B1C]"
         />
+        {error && (
+          <p className="mt-3 text-center text-sm text-red-600">
+            {error}
+          </p>
+        )}
       </div>
 
       <Link
@@ -112,9 +170,10 @@ export default function AnalysisPage() {
 
         <span>Back</span>
       </Link>
-      {step === "location" && location.trim() && (
-  <Link
-  href="/scan"
+      {step === "location" && isValidText(location) && (
+  <button
+  type="button"
+  onClick={handleLocationSubmit}
   className="absolute right-5 bottom-9 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:right-8"
 >
     <span>Proceed</span>
@@ -144,7 +203,7 @@ export default function AnalysisPage() {
         />
       </span>
     </span>
-  </Link>
+  </button>
 )}
     </main>
   );
