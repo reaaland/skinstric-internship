@@ -198,46 +198,53 @@ export default function Home() {
       </h1>
 
       <div
-        className={`absolute left-8 top-1/2 hidden -translate-y-1/2 transition-opacity duration-300 md:block ${
-          takeTestHovered
-            ? "pointer-events-none opacity-0"
-            : "opacity-100"
-        }`}
-      >
-        <DirectionButton
-          direction="left"
-          label="Discover A.I."
-          className="flex"
-        />
-      </div>
+  className={`absolute left-8 top-1/2 hidden -translate-y-1/2 transition-opacity duration-300 md:block ${
+    takeTestHovered
+      ? "pointer-events-none opacity-0"
+      : "opacity-100"
+  }`}
+>
+  <DirectionButton
+    direction="left"
+    label="Discover A.I."
+    className="flex"
+  />
+</div>
 
-      <DirectionButton
-        direction="right"
-        label="Take Test"
-        expanded={takeTestHovered}
-        onMouseEnter={() => setTakeTestHovered(true)}
-        onMouseLeave={() => setTakeTestHovered(false)}
-        onFocus={() => setTakeTestHovered(true)}
-        onBlur={() => setTakeTestHovered(false)}
-        onClick={() => router.push("/analysis")}
-        className="absolute right-8 top-1/2 z-20 hidden -translate-y-1/2 md:flex"
-      />
+<DirectionButton
+  direction="right"
+  label="Take Test"
+  expanded={takeTestHovered}
+  onMouseEnter={() => setTakeTestHovered(true)}
+  onMouseLeave={() => setTakeTestHovered(false)}
+  onFocus={() => setTakeTestHovered(true)}
+  onBlur={() => setTakeTestHovered(false)}
+  onClick={() => router.push("/analysis")}
+  className="absolute right-8 top-1/2 z-20 hidden -translate-y-1/2 md:flex"
+/>
 
-      <p className="absolute bottom-6.5 left-8 hidden text-sm leading-6 uppercase md:block">
-        Skinstric developed an A.I. that creates
-        <br />
-        a highly-personalised routine tailored to
-        <br />
-        what your skin needs.
-      </p>
+<p className="absolute bottom-6.5 left-8 hidden text-sm leading-6 uppercase md:block">
+  Skinstric developed an A.I. that creates
+  <br />
+  a highly-personalised routine tailored to
+  <br />
+  what your skin needs.
+</p>
 
-      <div className="absolute inset-x-5 bottom-6 flex items-center justify-between md:hidden">
-        <DirectionButton
-          direction="left"
-          label="Discover A.I."
-          className="flex"
-        />
-      </div>
+<div className="absolute inset-x-5 bottom-6 flex items-center justify-between md:hidden">
+  <DirectionButton
+    direction="left"
+    label="Discover A.I."
+    className="flex"
+  />
+
+  <DirectionButton
+    direction="right"
+    label="Take Test"
+    onClick={() => router.push("/analysis")}
+    className="flex"
+  />
+</div>
     </main>
   );
 }
