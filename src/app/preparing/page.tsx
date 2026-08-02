@@ -9,7 +9,7 @@ export default function PreparingPage() {
         width={740}
         height={740}
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 size-[min(72.3vh,90vw,740px)] -translate-x-1/2 -translate-y-1/2 object-contain"
+        className="pointer-events-none absolute left-1/2 top-1/2 size-[440px] max-w-none -translate-x-1/2 -translate-y-1/2 object-contain sm:size-[min(72.3vh,90vw,740px)]"
         />
 
       <p className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-center text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
