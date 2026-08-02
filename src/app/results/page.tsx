@@ -4,51 +4,51 @@ import Link from "next/link";
 export default function ResultsPage() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#FCFCFC] text-[#1A1B1C]">
-     <Image
+      <Image
         src="/assets/results-rombuses.svg"
         alt=""
         width={762}
         height={762}
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-1/2 size-[min(79.4vh,90vw,762px)] -translate-x-1/2 -translate-y-1/2 object-contain"
-        />
+      />
       <div className="absolute left-1/2 top-1/2 z-10 size-[min(46.2vh,52vw,444px)] -translate-x-1/2 -translate-y-1/2">
-      <Link
-  href="/results/demographics"
-  className="absolute left-1/2 top-0 size-[49%] -translate-x-1/2"
->
-        <div className="absolute inset-[14.65%] rotate-45 bg-[#E1E1E2]" />
+        <Link
+          href="/results/demographics"
+          className="absolute left-1/2 top-0 size-[49%] -translate-x-1/2"
+        >
+          <div className="absolute inset-[14.65%] rotate-45 bg-[#E1E1E2]" />
 
-        <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
-          Demographics
-        </p>
-      </Link>
-      <div className="absolute left-0 top-[25.5%] size-[49%]">
-      <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
+          <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
+            Demographics
+          </p>
+        </Link>
+        <div className="absolute left-0 top-[25.5%] size-[49%]">
+          <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
 
-      <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
-        Skin Type
-        <br />
-        Details
-      </p>
-    </div>
-    <div className="absolute left-[50.7%] top-[25.5%] size-[49%]">
-    <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
+          <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
+            Skin Type
+            <br />
+            Details
+          </p>
+        </div>
+        <div className="absolute left-[50.7%] top-[25.5%] size-[49%]">
+          <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
 
-    <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
-      Cosmetic
-      <br />
-      Concerns
-    </p>
-  </div>
-    <div className="absolute left-1/2 top-[51%] size-[49%] -translate-x-1/2">
-    <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
+          <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
+            Cosmetic
+            <br />
+            Concerns
+          </p>
+        </div>
+        <div className="absolute left-1/2 top-[51%] size-[49%] -translate-x-1/2">
+          <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
 
-    <p className="absolute inset-0 flex items-center justify-center text-center text-[9px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
-      Weather
-    </p>
-  </div>
-    </div>
+          <p className="absolute inset-0 flex items-center justify-center text-center text-[9px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
+            Weather
+          </p>
+        </div>
+      </div>
       <header className="absolute inset-x-0 top-0 z-20 flex h-16 items-center px-5 sm:px-8">
         <div className="flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em]">
           <span>Skinstric</span>

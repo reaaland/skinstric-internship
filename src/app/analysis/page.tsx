@@ -12,53 +12,53 @@ export default function AnalysisPage() {
   const [location, setLocation] = useState("");
   const [error, setError] = useState("");
   const isValidText = (value: string) =>
-  /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(value.trim());
+    /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(value.trim());
   const handleNameSubmit = () => {
-  if (!isValidText(name)) {
-    setError("Please enter a valid name using letters only.");
-    return;
-  }
-
-  setError("");
-  setStep("location");
-};
-const handleLocationSubmit = async () => {
-  if (!isValidText(location)) {
-    setError("Please enter a valid location using letters only.");
-    return;
-  }
-
-  setError("");
-
-  try {
-    const userInfo = {
-      name: name.trim(),
-      location: location.trim(),
-    };
-
-    const response = await fetch(
-      "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseOne",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userInfo),
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error("Submission failed");
+    if (!isValidText(name)) {
+      setError("Please enter a valid name using letters only.");
+      return;
     }
 
-    localStorage.setItem("skinstricUser", JSON.stringify(userInfo));
-    router.push("/scan");
-  } catch {
-    setError("Unable to submit your information. Please try again.");
-  }
-};
+    setError("");
+    setStep("location");
+  };
+  const handleLocationSubmit = async () => {
+    if (!isValidText(location)) {
+      setError("Please enter a valid location using letters only.");
+      return;
+    }
 
- return (
+    setError("");
+
+    try {
+      const userInfo = {
+        name: name.trim(),
+        location: location.trim(),
+      };
+
+      const response = await fetch(
+        "https://us-central1-api-skinstric-ai.cloudfunctions.net/skinstricPhaseOne",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userInfo),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Submission failed");
+      }
+
+      localStorage.setItem("skinstricUser", JSON.stringify(userInfo));
+      router.push("/scan");
+    } catch {
+      setError("Unable to submit your information. Please try again.");
+    }
+  };
+
+  return (
     <main className="relative min-h-screen overflow-hidden bg-[#FCFCFC] text-[#1A1B1C]">
       <header className="absolute inset-x-0 top-0 z-20 flex h-16 items-center px-5 sm:px-8">
         <div className="flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em]">
@@ -85,15 +85,15 @@ const handleLocationSubmit = async () => {
         className="pointer-events-none absolute left-1/2 top-1/2 size-[min(79.4vh,90vw,762px)] -translate-x-1/2 -translate-y-1/2"
       />
 
-    <div
+      <div
         className={`absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center ${
-            step === "name"
+          step === "name"
             ? "w-[min(85vw,417px)]"
             : location.trim()
-                ? "w-[min(85vw,259px)]"
-                : "w-[min(85vw,481px)]"
+              ? "w-[min(85vw,259px)]"
+              : "w-[min(85vw,481px)]"
         }`}
-        >
+      >
         <label
           htmlFor="name"
           className="mb-1 text-sm uppercase leading-6 opacity-40"
@@ -107,10 +107,12 @@ const handleLocationSubmit = async () => {
           id="name"
           name="name"
           type="text"
-          placeholder={step === "name" ? "Introduce Yourself" : "Where are you from?"}
+          placeholder={
+            step === "name" ? "Introduce Yourself" : "Where are you from?"
+          }
           value={step === "name" ? name : location}
           onChange={(event) =>
-          step === "name"
+            step === "name"
               ? setName(event.target.value)
               : setLocation(event.target.value)
           }
@@ -127,18 +129,16 @@ const handleLocationSubmit = async () => {
           className="w-full border-b border-[#1A1B1C] bg-transparent pb-1 text-center text-[clamp(40px,3.125vw,60px)] font-light leading-16 tracking-[-0.07em] outline-none placeholder:text-[#1A1B1C]"
         />
         {error && (
-          <p className="mt-3 text-center text-sm text-red-600">
-            {error}
-          </p>
+          <p className="mt-3 text-center text-sm text-red-600">{error}</p>
         )}
       </div>
 
       <Link
         href={step === "name" ? "/" : "/analysis"}
         onClick={() => {
-            if (step === "location") {
+          if (step === "location") {
             setStep("name");
-            }
+          }
         }}
         className="absolute bottom-9 left-5 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:left-8"
       >
@@ -171,40 +171,40 @@ const handleLocationSubmit = async () => {
         <span>Back</span>
       </Link>
       {step === "location" && isValidText(location) && (
-  <button
-  type="button"
-  onClick={handleLocationSubmit}
-  className="absolute right-5 bottom-9 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:right-8"
->
-    <span>Proceed</span>
+        <button
+          type="button"
+          onClick={handleLocationSubmit}
+          className="absolute right-5 bottom-9 z-20 flex items-center gap-4 text-sm font-semibold uppercase tracking-[-0.02em] opacity-70 sm:right-8"
+        >
+          <span>Proceed</span>
 
-    <span className="relative size-11 shrink-0" aria-hidden="true">
-      <Image
-        src="/assets/take-test-icon-part-1.svg"
-        alt=""
-        fill
-        sizes="44px"
-      />
+          <span className="relative size-11 shrink-0" aria-hidden="true">
+            <Image
+              src="/assets/take-test-icon-part-1.svg"
+              alt=""
+              fill
+              sizes="44px"
+            />
 
-      <Image
-        src="/assets/take-test-icon-part-2.svg"
-        alt=""
-        fill
-        sizes="44px"
-      />
+            <Image
+              src="/assets/take-test-icon-part-2.svg"
+              alt=""
+              fill
+              sizes="44px"
+            />
 
-      <span className="absolute top-[37.63%] left-[42.53%] h-[24.74%] w-[21.43%]">
-        <Image
-          src="/assets/arrow-right.svg"
-          alt=""
-          fill
-          sizes="10px"
-          className="-scale-x-100 object-contain"
-        />
-      </span>
-    </span>
-  </button>
-)}
+            <span className="absolute top-[37.63%] left-[42.53%] h-[24.74%] w-[21.43%]">
+              <Image
+                src="/assets/arrow-right.svg"
+                alt=""
+                fill
+                sizes="10px"
+                className="-scale-x-100 object-contain"
+              />
+            </span>
+          </span>
+        </button>
+      )}
     </main>
   );
 }

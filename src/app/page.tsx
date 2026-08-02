@@ -61,9 +61,7 @@ function DirectionButton({
           alt=""
           fill
           sizes="10px"
-          className={
-            isLeft ? "object-contain" : "-scale-x-100 object-contain"
-          }
+          className={isLeft ? "object-contain" : "-scale-x-100 object-contain"}
         />
       </span>
     </span>
@@ -107,24 +105,24 @@ function DirectionButton({
   );
 
   return (
-  <button
-    type="button"
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-    onFocus={onFocus}
-    onBlur={onBlur}
-    onClick={onClick}
-    className={`items-center text-sm font-semibold uppercase tracking-[-0.02em] transition-all duration-700 ease-out ${
-      expanded ? "gap-6 opacity-100" : "gap-4 opacity-70"
-    } ${className}`}
-  >
-    {isLeft && defaultIcon}
+    <button
+      type="button"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      onClick={onClick}
+      className={`items-center text-sm font-semibold uppercase tracking-[-0.02em] transition-all duration-700 ease-out ${
+        expanded ? "gap-6 opacity-100" : "gap-4 opacity-70"
+      } ${className}`}
+    >
+      {isLeft && defaultIcon}
 
-    <span>{label}</span>
+      <span>{label}</span>
 
-    {!isLeft && (expanded ? expandedIcon : defaultIcon)}
-  </button>
-);
+      {!isLeft && (expanded ? expandedIcon : defaultIcon)}
+    </button>
+  );
 }
 
 export default function Home() {
@@ -198,53 +196,51 @@ export default function Home() {
       </h1>
 
       <div
-  className={`absolute left-8 top-1/2 hidden -translate-y-1/2 transition-opacity duration-300 md:block ${
-    takeTestHovered
-      ? "pointer-events-none opacity-0"
-      : "opacity-100"
-  }`}
->
-  <DirectionButton
-    direction="left"
-    label="Discover A.I."
-    className="flex"
-  />
-</div>
+        className={`absolute left-8 top-1/2 hidden -translate-y-1/2 transition-opacity duration-300 md:block ${
+          takeTestHovered ? "pointer-events-none opacity-0" : "opacity-100"
+        }`}
+      >
+        <DirectionButton
+          direction="left"
+          label="Discover A.I."
+          className="flex"
+        />
+      </div>
 
-<DirectionButton
-  direction="right"
-  label="Take Test"
-  expanded={takeTestHovered}
-  onMouseEnter={() => setTakeTestHovered(true)}
-  onMouseLeave={() => setTakeTestHovered(false)}
-  onFocus={() => setTakeTestHovered(true)}
-  onBlur={() => setTakeTestHovered(false)}
-  onClick={() => router.push("/analysis")}
-  className="absolute right-8 top-1/2 z-20 hidden -translate-y-1/2 md:flex"
-/>
+      <DirectionButton
+        direction="right"
+        label="Take Test"
+        expanded={takeTestHovered}
+        onMouseEnter={() => setTakeTestHovered(true)}
+        onMouseLeave={() => setTakeTestHovered(false)}
+        onFocus={() => setTakeTestHovered(true)}
+        onBlur={() => setTakeTestHovered(false)}
+        onClick={() => router.push("/analysis")}
+        className="absolute right-8 top-1/2 z-20 hidden -translate-y-1/2 md:flex"
+      />
 
-<p className="absolute bottom-6.5 left-8 hidden text-sm leading-6 uppercase md:block">
-  Skinstric developed an A.I. that creates
-  <br />
-  a highly-personalised routine tailored to
-  <br />
-  what your skin needs.
-</p>
+      <p className="absolute bottom-6.5 left-8 hidden text-sm leading-6 uppercase md:block">
+        Skinstric developed an A.I. that creates
+        <br />
+        a highly-personalised routine tailored to
+        <br />
+        what your skin needs.
+      </p>
 
-<div className="absolute inset-x-5 bottom-6 flex items-center justify-between md:hidden">
-  <DirectionButton
-    direction="left"
-    label="Discover A.I."
-    className="flex"
-  />
+      <div className="absolute inset-x-5 bottom-6 flex items-center justify-between md:hidden">
+        <DirectionButton
+          direction="left"
+          label="Discover A.I."
+          className="flex"
+        />
 
-  <DirectionButton
-    direction="right"
-    label="Take Test"
-    onClick={() => router.push("/analysis")}
-    className="flex"
-  />
-</div>
+        <DirectionButton
+          direction="right"
+          label="Take Test"
+          onClick={() => router.push("/analysis")}
+          className="flex"
+        />
+      </div>
     </main>
   );
 }
