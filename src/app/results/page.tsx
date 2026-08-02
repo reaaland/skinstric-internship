@@ -19,14 +19,14 @@ export default function ResultsPage() {
 >
         <div className="absolute inset-[14.65%] rotate-45 bg-[#E1E1E2]" />
 
-        <p className="absolute inset-0 flex items-center justify-center text-center text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
+        <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
           Demographics
         </p>
       </Link>
       <div className="absolute left-0 top-[25.5%] size-[49%]">
       <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
 
-      <p className="absolute inset-0 flex items-center justify-center text-center text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
+      <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
         Skin Type
         <br />
         Details
@@ -35,7 +35,7 @@ export default function ResultsPage() {
     <div className="absolute left-[50.7%] top-[25.5%] size-[49%]">
     <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
 
-    <p className="absolute inset-0 flex items-center justify-center text-center text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
+    <p className="absolute inset-0 flex items-center justify-center text-center text-[11px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
       Cosmetic
       <br />
       Concerns
@@ -44,7 +44,7 @@ export default function ResultsPage() {
     <div className="absolute left-1/2 top-[51%] size-[49%] -translate-x-1/2">
     <div className="absolute inset-[14.65%] rotate-45 bg-[#F3F3F4]" />
 
-    <p className="absolute inset-0 flex items-center justify-center text-center text-base font-semibold uppercase leading-6 tracking-[-0.02em]">
+    <p className="absolute inset-0 flex items-center justify-center text-center text-[9px] font-semibold uppercase leading-4 sm:text-base sm:leading-6 tracking-[-0.02em]">
       Weather
     </p>
   </div>
