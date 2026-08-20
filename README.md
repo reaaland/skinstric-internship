@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Skinstric Internship
+
+A responsive AI skincare analysis interface built as part of the Frontend Simplified internship curriculum.
+
+This project recreates the Skinstric experience while implementing a multi-step analysis flow, image capture and upload, API integration, responsive layouts, and interactive demographic results.
+
+## Live Demo
+
+https://skinstric-internship-chi.vercel.app
+
+## Features
+
+- Multi-step user information flow
+- Name and location validation
+- AI analysis API integration
+- Webcam access and selfie capture
+- Image upload from a device
+- Base64 image processing for API submission
+- Interactive demographic analysis results
+- User-selectable race, age, and gender predictions
+- Local storage for analysis data and confirmed results
+- Responsive layouts for desktop and mobile
+
+## Tech Stack
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Skinstric API
+- Browser MediaDevices API
+- Canvas API
+- FileReader API
+- Local Storage
+- Vercel
+
+## Project Flow
+
+1. User starts the Skinstric analysis
+2. User enters their name and location
+3. The information is submitted to the Skinstric API
+4. User captures a selfie or uploads an image
+5. The image is converted and sent for AI analysis
+6. Demographic predictions are displayed with confidence scores
+7. User can review, adjust, and confirm the results
 
 ## Getting Started
 
-First, run the development server:
+### Requirements
+
+- Node.js 24
+- npm
+
+### Installation
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Available Scripts
 
-## Learn More
+```bash
+npm run dev
+npm run lint
+npm run build
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Project Routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/` — Landing page
+- `/analysis` — Name and location input
+- `/scan` — Camera or image upload flow
+- `/preparing` — Processing state
+- `/results/demographics` — AI demographic analysis
+- `/results` — Confirmed analysis results
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Context
 
-## Deploy on Vercel
+This project was completed as part of the Frontend Simplified internship curriculum.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The core Skinstric assignment structure and requirements have been preserved. This repository documents my implementation of the assigned experience, including responsive layouts, API integration, image capture and upload, client-side state handling, and interactive results.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Author
+
+Rebecca Aaland
+
+Frontend Developer
+
+Portfolio: https://rebeccaiaaland.com
